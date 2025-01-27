@@ -1,0 +1,85 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.22621}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\b\f0\fs28\lang9 SQL NOTES\par
+\fs22 1. MANIPULATION\b0\par
+\b 2. QUERIES\par
+3. OPERATORS\par
+4. AGGREGATE FUNCTIONS\par
+5. WINDOW FUNCTIONS\par
+6.  MULTIPLE TABLES\par
+\b0\par
+\b COMMANDS / SYNTAX:\par
+1. ------------MANIPULATION----------\par
+* COLUMN CONSTRAINTS:\par
+\tab -PRIMARY KEY \b0 constraint can be used to uniquely identify the row.\line\tab\tab (There can only be one PRIMARY KEY column per table & Cannot be nul)\b\par
+\tab -UNIQUE \b0 columns have a different value for every row.\line\tab\tab (Can have multiple unique columns.)\b\par
+\tab -NOT NULL \b0 columns must have a value.\b\par
+\tab -DEFAULT \b0 assigns a default value for the column when no value is specified\par
+\b * CREATE TABLE - \b0 statement creates a new table in a database.\line\tab\b CREATE TABLE \b0 table name (column 1 data type, column 2 data type.....)\par
+\tab\b EXAMPLE:\line\b0\tab\b CREATE TABLE \b0 table name (\line\tab id \b INTEGER PRIMARY KEY\b0 ,\line\tab name \b TEXT UNIQUE\b0 ,\line\tab grade \b INTEGER NOT NULL\line\tab\b0 age \b INTEGER DEFAULT \b0 10\line\tab );\par
+\b * INSERT INTO - \b0 adds a new row to a table.\line\tab\b\i --- Insert into columns in order ---\i0\line\b0\tab\b INSERT INTO \b0 table_name\line\tab\b VALUES \b0 (value_1, value_2)\par
+\tab\b\i ---Insert into clomuns by name ---\b0\i0\line\tab\b INSERT INTO \b0 table_name (column1, column2)\b\line\tab VALUES \b0 (value1, value2)\par
+\b * ALTER TABLE - \b0 To modify the columns of an existing table.\line\tab\b ALTER TABLE\b0  table_name\b\line\tab ADD \b0 column_name data_type;\line\tab\b CHANGE COLUMN \b0 old_column_name new_column_name data_type;\par
+\b\tab - ADD COLUMN - \b0 Used to add a new column.\line\tab\b - CHANGE COLUMN \b0 - Used to rename a column.\par
+\b *DELETE - \b0 Used to delete rows in a table. (IF not using WHERE all records are deleted)\line\tab\b DELETE FROM\b0  table_name\b\line\tab WHERE \b0 column = vlaue\par
+\b * UPDATE - \b0 used to edit rows in a table with SET to indicate the column and WHERE.\line\tab\b UPDATE \b0 tabel_name\line\tab\b SET \b0 column1 = value1, column 2 = value2\line\tab\b WHERE \b0 column = value\par
+\par
+\b 2. ------------QUERIES------------\par
+* SELECT- \b0 Selects columns (use * for all columns)(can select multiple(SELECT name, year))\par
+\b * LIMIT - \b0 max number of rows to be displayed\par
+\b * AS - \b0 Renames a column or table (used normally before FROM)\par
+\b * DISTINCT\b0 : - Filters out values. \line\tab SELECT DISTINCT (value)\line\tab FROM (table)\par
+\b * CONDITIONAL with WHERE clause:\b0\line\tab SELECT *FROM (table)\line\tab WHERE (colum)( conditional) (ex:WHERE numbers < 5;)\par
+\b * WILD CARDS:\b0\line\tab - \b _ Wild Card \b0 - Matches any single unspecified character\line\tab\tab SELECT name FROM movies\line\tab\tab WHERE name LIKE '_ove'; \line\tab\tab --(Matches anything with a single character followed by 'ove')\par
+\tab\b - % Wild Card \b0 - Matches 0 or more of any unspecified number of charcters\line\tab\tab SELECT name FROM movies\line\tab\tab WHERE name LIKE 'The%';\line\tab\tab --(Matches any movie that begins with 'the' followed by 0 or more characters)\par
+\b * ORDER BY: \b0 - Used to sort a colum alphabetically or numerically by ASC or DESC\line\tab SELECT * FROM (table)\line\tab ORDER BY  year DESC;\line\tab --(Orders the year by descending order (the default is ascending)(always after WHERE \tab\tab    if present)\par
+\b * CASE - \b0 Creates different outputs (SQL if-then) usually in SELECT statement (ends with end)\tab SELECT (column), (use ' , ' for CASE)\line\tab CASE\line\tab   WHEN (condition) THEN (output)\line\tab   WHEN (condition) THEN (output)\line\tab   ELSE (output)\line\tab END (use END AS (new column name) to shorten column name)\line\tab FROM (table)\par
+\b * HAVING - \b0 SImilar to WHERE but used with aggregate functions. (comes after GROUP BY, but \tab\tab\tab\tab\tab\tab\tab\tab\tab before ORDER BY and LIMIT)\line\tab SELECT COUNT(solumn name) FROM (table)\line\tab HAVING COUNT(column name) (condition);\par
+\b ***EXAMPLE OF MULTIPLE COMMANDS QUERY***\par
+\tab SELECT \b0 name, year, imdb_rating,\line\tab\b CASE\b0\line\tab\b WHEN \b0 imdb_rating > 7 \b THEN \b0 'Great'\line\tab\b WHEN \b0 imdb_rating > 5 \b THEN \b0 'Alright'\line\tab\b WHEN \b0 imdb_rating \b IS NULL THEN\b0  'null'\line\tab\b ELSE \b0 'Not good'\line\tab\b END AS \b0 'Score'\line\tab\b FROM \b0 movies\line\tab\b WHERE \b0 year < 2010\line\tab\b ORDER BY \b0 imdb_rating \b DESC\b0\line\tab\b LIMIT \b0 10;\par
+\par
+\b 3. ------------OPERATORS------------\par
+* IS NULL - \b0 Unknown values/missing values\par
+\b * IS NOT NULL - \b0 Checks for values not NULL\par
+\b * AND \b0 - Displays rows if ALL conditions are true\par
+\b * OR - \b0 Displays rows if ANY condition is true\par
+\b * LIKE Operator: \b0 - Used with WHERE to match specific pattern\line\tab SELECT names FROM (table)\line\tab WHERE name LIKE 'star%';\line\tab --(Matches names from table that begin with 'star'. Can also be used like '%star%.)\par
+\b * BETWEEN: - \b0 Filters results with a certain range\line\tab SELECT * FROM (table)\line\tab WHERE number BETWEEN 1 AND 10\line\tab --(Filters numbers/ range from 1 up to and including 10)\par
+\par
+\b 4. ------------AGGREGATE FUNCTIONS------------\par
+*AGGREGATE FUNCTIONS - \b0 perform a calculation on a set of values and return a single value\b\par
+* COUNT( ) - \b0 Count the number of rows (non empty values)\line\tab COUNT(*) - Counts every row (includes null)\line\tab COUNT((column name)) - Counts rows in the column (doesnt include null)\b\par
+* SUM(\b0  \b ) - \b0 Sum of values in that column\line\tab SELECT SUM(column name) FROM (table);\b\par
+* MAX(\b0  \b ) - \b0 Largest value in that column\line\tab SELECT MAX(column name) FROM (table);\b\par
+* MIN(\b0  \b ) - \b0 Smallest value in a column\line\tab SELECT MIN(column name) FROM (table name);\b\par
+* AVG( ) - \b0 Calculate average of values in a column\line\tab SELECT AVG(column name) FROM (table name);\par
+\b * ROUND( ) - \b0 Rounds values in a column to number of decimal places specified by integer \tab\tab\tab\tab (takes 2 arguments column name, and an integer)\line\tab SELECT name, ROUND(price, integer) FROM (table); \line\tab\tab\tab (returns names and the rounded price)\par
+\b *GROUP BY( ) - \b0 Arrange identical data into groups Used with aggregate functions in collaboration with SELECT. (comes after any WHERE but before ORDER BY or LIMIT)\line\tab\b SELECT\b0  column_name \b FROM \b0 table_name\line\tab\b GROUP BY \b0 column_name\line\tab\b ORDER BY \b0 column_name;\par
+\b * YEAR( )- \b0 Filter by year from a \b DATE \b0 column.\line\tab\b WHERE YEAR (\b0 date_column_name\b ) > \b0 1990;\line\tab (Shows rows with the year over 1990)\par
+\par
+\b 5. ------------ WINDOW FUNCTIONS -------------\par
+* WINDOW FUNCTIONS - \b0 perform calculations across a set of table rows related to the current row. (can use window and aggregate functions)\par
+\b * OVER( ) - \b0 Defines the window of rows for the function to operate on, specifying \b partitioning\b0  and \b ordering. \b0 SQL processes each row within this window according to the specified function (like SUM, AVG, etc.) \b SUM(\b0 column\b ) OVER \b0 (\b PARTITION BY, ORDER BY\b0 ) can also use just \b PARTITION \b0 BY or \b ORDER \b0 BY.\b\par
+* PARTITION - \b0 dividing the result set into smaller subsets, or "\b partitions\b0 ," based on the values of one or more columns. Each \b partition \b0 is then processed independently by the \b window function\b0 .\line\tab -\b SUM\b0 (available_copies) \b OVER \b0 (\b PARTITION BY \b0 category): The \b SUM\b0 () function calculates\line\tab the total number of available copies within each \b partition \b0 (i.e., for each category).\par
+\b * ROW NUMBER( ) - \b0 assign a unique row number to each row, ordered by the title column.\line\tab -\b SELECT \b0 column1 \b ROW NUMBER () OVER \b0 (\b ORDER BY \b0 column1) \b AS \b0 'New_column_name' \line\tab\b FROM \b0 table_name;\par
+\b * RANK( ) - \b0 Assigns a rank to each row within a partition of a result set. Rows with equal values receive the same rank, and the next rank is incremented by the number of tied rows\b .\line\tab\b0 - \b RANK\b0 () \b OVER \b0 (\b ORDER BY \b0 publication_date): This assigns a rank to each book based \tab on the publication_date. Books with the same publication date receive the same rank, \tab and the next rank is incremented by the number of tied rows.\par
+\b * DENSE RANK( ) - \b0 Similar to \b RANK\b0 (), but the next rank is incremented by 1 regardless of the number of tied rows.\par
+\b * NTILE(n)- \b0 helps you distribute rows into a specified number of groups, making it easier to analyze data in segments. (used like percentiles)\line\tab\b (n) - \b0 number of segments \b\par
+* LEAD( ) - \b0 provides access to a row at a specified physical offset following the current row within the result set (take this table, move forward by this much, use this default (if provided)\line\tab - \b LEAD\b0 (column, offset, default)\line\tab\b column\b0 : The column from which to retrieve the value.\line\tab\b offset\b0 : The number of rows forward from the current row (default is 1).\line\tab\b default\b0 : The value to return if the offset goes beyond the result set (optional).\line\tab - \b SELECT \b0 column1, column2, \line\tab    \b LEAD\b0 (column2, 1) OVER (ORDER BY column1) AS next_column2\line\tab    \b FROM \b0 table1;\b\par
+* LAG( ) - \b0 Opposite of \b LEAD\b0 . \b LAG \b0 looks back and \b LEAD \b0 looks forward.\b\par
+*  WINDOW FUNCTION EXAMPLES:\line\b0\tab\b MIN\b0 (publication_date) \b OVER \b0 (\b PARTITION BY \b0 category \b ORDER BY \b0 publication_date)\tab *This calculates the minimum publication date within each category.\par
+\par
+\b 6. -------------- MULTIPLE TABLES---------------\par
+* USING TABLES AND COLUMN NAMES- \b0 table_name.column_name\par
+\b * JOIN - \b0 Joins tables with another table (will only return results matching the condition \tab specified by ON).\line\tab -\b INNER JOIN \b0 is the default JOIN\par
+\tab\b - LEFT JOIN \b0 keeps all rows from the first table even if there is no matching rows.\line\tab\tab\tab (Will omit the unmatched row from the second table)\par
+\tab\b - CROSS JOIN \b0 used to combine each row form one table with each row from another\line\tab\tab table. (helpful for creating all possible combinations for the rows in two tables)\par
+\b * ON - \b0 How to combine the tables (what to match the column information with)\par
+\tab\b SELECT * FROM \b0 (table name)\line\tab\b JOIN \b0 (other table name)\line\tab\b ON \b0 table name.column name = table name.column name; \par
+\tab\b SELECT \b0 table name.column name, other_tablename.columnname\line\tab\b FROM \b0 (table name)\line\tab\b JOIN \b0 (other table name)\line\tab\b ON \b0 table.column = other_table.column\par
+\b *UNION - \b0 Combins results from multiple SELECT and filters duplicates\line\tab\b SELECT \b0 column_name\tab\tab (Tables must have same number of columns)\line\tab\b FROM \b0 table_name\tab\tab (Columns must have the same data types in the same\line\tab\b UNION\tab\tab\tab\tab\b0 order as the first table)\line\tab\b SELECT \b0 column_name\line\tab\b FROM \b0 table_name;\par
+\b * FOREIGN KEY - \b0 PRIMARY KEY for one table appears in a differnet table. \par
+\b * WITH - \b0 Stores the result of a query in a temporary table using a nickname.\line\tab\b WITH\b0  (new_temp_name) \b AS \b0 (\line\tab\b SELECT \b0 * \b FROM \b0 (table_name)\par
+\par
+}
+ 
