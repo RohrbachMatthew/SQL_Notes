@@ -9,6 +9,7 @@
 6.  MULTIPLE TABLES\par
 7. STRING FUNCTIONS\par
 8. DATE AND TIME FUNCTIONS\par
+9. DATA COMMANDS\par
 \b0\par
 \b COMMANDS / SYNTAX:\par
 \fs28 1. ------------MANIPULATION----------\par
@@ -23,8 +24,9 @@
 \tab\b\i ---Insert into clomuns by name ---\b0\i0\line\tab\b INSERT INTO \b0 table_name (column1, column2)\b\line\tab VALUES \b0 (value1, value2)\par
 \b * ALTER TABLE - \b0 To modify the columns of an existing table.\line\tab\b ALTER TABLE\b0  table_name\b\line\tab ADD \b0 column_name data_type;\line\tab\b CHANGE COLUMN \b0 old_column_name new_column_name data_type;\line\tab\tab\b - ADD COLUMN - \b0 Used to add a new column.\line\tab\tab\b - CHANGE COLUMN \b0 - Used to rename a column.\par
 \b *DELETE - \b0 Used to delete rows in a table. (IF not using WHERE all records are deleted)\line\tab\b DELETE FROM\b0  table_name\b\line\tab WHERE \b0 column = vlaue\par
-\b * UPDATE - \b0 used to edit rows in a table with SET to indicate the column and WHERE.\line\tab\b UPDATE \b0 tabel_name\line\tab\b SET \b0 column1 = value1, column 2 = value2\line\tab\b WHERE \b0 column = value\par
+\b * UPDATE - \b0 used to edit rows in a table with SET to indicate the column and new value\line\tab\b UPDATE \b0 tabel_name\line\tab\b SET \b0 column1 = value1, column 2 = value2 OR column1 = value - 1\line\tab\b WHERE \b0 column = value\par
 \par
+\b ---------------------------------------------------------------------------------------------------------------------------\b0\par
 \b\fs28 2. ------------QUERIES------------\par
 \fs22 * SELECT- \b0 Selects columns (use * for all columns)(can select multiple(SELECT name, year))\par
 \b * LIMIT - \b0 max number of rows to be displayed\par
@@ -39,6 +41,7 @@
 \b ***EXAMPLE OF MULTIPLE COMMANDS QUERY***\par
 \tab SELECT \b0 name, year, imdb_rating,\line\tab\b CASE\b0\line\tab\b WHEN \b0 imdb_rating > 7 \b THEN \b0 'Great'\line\tab\b WHEN \b0 imdb_rating > 5 \b THEN \b0 'Alright'\line\tab\b WHEN \b0 imdb_rating \b IS NULL THEN\b0  'null'\line\tab\b ELSE \b0 'Not good'\line\tab\b END AS \b0 'Score'\line\tab\b FROM \b0 movies\line\tab\b WHERE \b0 year < 2010\line\tab\b ORDER BY \b0 imdb_rating \b DESC\b0\line\tab\b LIMIT \b0 10;\par
 \par
+\b ---------------------------------------------------------------------------------------------------------------------------\b0\par
 \b\fs28 3. ------------OPERATORS------------\par
 \fs22 * IS NULL - \b0 Unknown values/missing values\par
 \b * IS NOT NULL - \b0 Checks for values not NULL\par
@@ -47,6 +50,7 @@
 \b * LIKE Operator: \b0 - Used with WHERE to match specific pattern\line\tab SELECT names FROM (table)\line\tab WHERE name LIKE 'star%';\line\tab --(Matches names from table that begin with 'star'. Can also be used like '%star%.)\par
 \b * BETWEEN: - \b0 Filters results with a certain range\line\tab SELECT * FROM (table)\line\tab WHERE number BETWEEN 1 AND 10\line\tab --(Filters numbers/ range from 1 up to and including 10)\par
 \par
+\b --------------------------------------------------------------------------------------------------------------------------\b0\par
 \b\fs28 4. ------------AGGREGATE FUNCTIONS------------\par
 \fs22 *AGGREGATE FUNCTIONS - \b0 perform a calculation on a set of values and return a single value\b\par
 * COUNT( ) - \b0 Count the number of rows (non empty values)\line\tab COUNT(*) - Counts every row (includes null)\line\tab COUNT((column name)) - Counts rows in the column (doesnt include null)\b\par
@@ -58,7 +62,8 @@
 \b *GROUP BY( ) - \b0 Arrange identical data into groups Used with aggregate functions in collaboration with SELECT. (comes after any WHERE but before ORDER BY or LIMIT)\line\tab\b SELECT\b0  column_name \b FROM \b0 table_name\line\tab\b GROUP BY \b0 column_name\line\tab\b ORDER BY \b0 column_name;\par
 \b * YEAR( )- \b0 Filter by year from a \b DATE \b0 column.\line\tab\b WHERE YEAR (\b0 date_column_name\b ) > \b0 1990;\line\tab (Shows rows with the year over 1990)\par
 \par
-\b\fs28 5. ------------ WINDOW FUNCTIONS -------------\par
+\b ---------------------------------------------------------------------------------------------------------------------------\par
+\fs28 5. ------------ WINDOW FUNCTIONS -------------\par
 \fs22 * WINDOW FUNCTIONS - \b0 perform calculations across a set of table rows related to the current row. (can use window and aggregate functions)\par
 \b * OVER( ) - \b0 Defines the window of rows for the function to operate on, specifying \b partitioning\b0  and \b ordering. \b0 SQL processes each row within this window according to the specified function (like SUM, AVG, etc.) \b SUM(\b0 column\b ) OVER \b0 (\b PARTITION BY, ORDER BY\b0 ) can also use just \b PARTITION \b0 BY or \b ORDER \b0 BY.\b\par
 * PARTITION - \b0 dividing the result set into smaller subsets, or "\b partitions\b0 ," based on the values of one or more columns. Each \b partition \b0 is then processed independently by the \b window function\b0 .\line\tab -\b SUM\b0 (available_copies) \b OVER \b0 (\b PARTITION BY \b0 category): The \b SUM\b0 () function calculates\line\tab the total number of available copies within each \b partition \b0 (i.e., for each category).\par
@@ -70,6 +75,7 @@
 * LAG( ) - \b0 Opposite of \b LEAD\b0 . \b LAG \b0 looks back and \b LEAD \b0 looks forward.\b\par
 *  WINDOW FUNCTION EXAMPLES:\line\b0\tab\b MIN\b0 (publication_date) \b OVER \b0 (\b PARTITION BY \b0 category \b ORDER BY \b0 publication_date)\tab *This calculates the minimum publication date within each category.\par
 \par
+---------------------------------------------------------------------------------------------------------------------------\par
 \b\fs28 6. -------------- MULTIPLE TABLES---------------\par
 \fs22 * USING TABLES AND COLUMN NAMES- \b0 table_name.column_name\par
 \b * JOIN - \b0 Joins tables with another table (will only return results matching the condition \tab specified by ON).\line\tab -\b INNER JOIN \b0 is the default JOIN\par
@@ -82,10 +88,12 @@
 \b * FOREIGN KEY - \b0 PRIMARY KEY for one table appears in a differnet table. \par
 \b * WITH - \b0 Stores the result of a query in a temporary table using a nickname.\line\tab\b WITH\b0  (new_temp_name) \b AS \b0 (\line\tab\b SELECT \b0 * \b FROM \b0 (table_name)\par
 \par
+---------------------------------------------------------------------------------------------------------------------------\par
 \b\fs28 7. ------------STRING FUNCTIONS------------\b0\fs22\par
 \b * CONCAT - \b0 Used to connect or join multiple strings to a single string.\line\tab\b SELECT CONCAT(\b0 '(', col1, ', ''', col2, ''', ''', 'name', ''')'\b )\b0\line\tab\b FROM \b0 your_table;\line\tab OUTPUT:\line\tab (123, 'example', 'name')\par
 \par
-\b\fs28 8. ------------DATE AND TIME FUNCTIONS -------------\par
+---------------------------------------------------------------------------------------------------------------------------\par
+\b\fs28 8. ------------DATE ANDTIME FUNCTIONS -------------\par
 \fs22 * CURDATE( ) - \b0 Returns the current date\b\par
 * DATE_SUB(date, INTERAL) - \b0 Subtracts specified time interval from a date\b\par
 * DATE_ADD(date, INTERVAL) - \b0 Adds specific time interval to a date\b\par
@@ -93,7 +101,10 @@
 * YEAR( date ) - \b0 Extracts the year from a date\b\par
 * MONTH ( date ) -\b0  Extracts month from a date\b\par
 *DAY( date ) - \b0 Extracts the day of the month from date\b\par
-* DATEDIFF( date1, date2 ) - \b0 Returns the difference in days between 2 dates\b\par
-\b0\par
+* DATEDIFF( date1, date2 ) - \b0 Returns the difference in days between 2 dates\par
+\par
+---------------------------------------------------------------------------------------------------------------\par
+\b\fs28 9. --------------DATA COMMANDS-------------\fs22\par
+INTO OUTFILE - \b0 Output of select will be written to a file\line\tab CSV EXAMPLE:\line\tab\b SELECT\b0  * \b FROM \b0 table_name\line\tab\b INTO OUTFILE\b0  'C:\\path_to_file.csv'\line\tab\b FIELDS TERMINATED BY \b0 ','  -- fields(columns) seperated by comma\line\tab\b ENCLOSED BY \b0 '"'  -- each field enclosed with double quotes\line\tab\b LINES TERMINATED BY \b0 'n\\'  -- each row terminated by new line\b\par
 }
  
