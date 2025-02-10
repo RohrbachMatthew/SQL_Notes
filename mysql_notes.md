@@ -10,8 +10,6 @@ SQL NOTES
 8. DATE AND TIME FUNCTIONS
 9. DATA COMMANDS
 
-### COMMANDS / SYNTAX:
-
 ---
 
 ## MANIPULATION
@@ -76,7 +74,7 @@ VALUES (value1, value2)
   WHERE column = vlaue
 ```
 
-- **`UPDATE`\*** - used to edit rows in a table with SET to indicate the column and new value
+- **`UPDATE`** - used to edit rows in a table with SET to indicate the column and new value
 
 ```
   UPDATE tabel_name
@@ -112,7 +110,7 @@ VALUES (value1, value2)
    (Matches anything with a single character followed by 'ove')
 ```
 
-- **% Wild Card** - Matches 0 or more of any unspecified number of charcters
+- **`% Wild Card `** - Matches 0 or more of any unspecified number of charcters
 
 ```
   SELECT name FROM movies
@@ -120,86 +118,117 @@ VALUES (value1, value2)
   --(Matches any movie that begins with 'the' followed by 0 or more characters)
 ```
 
-- ORDER BY: - Used to sort a colum alphabetically or numerically by ASC or DESC
-  SELECT FROM (table)
+- **`ORDER BY`**: - Used to sort a colum alphabetically or numerically by ASC or DESC
+
+```SELECT FROM (table)
   ORDER BY year DESC;
-  --(Orders the year by descending order (the default is ascending)(always after WHERE if present)
-- CASE - Creates different outputs (SQL if-then) usually in SELECT statement (ends with end) SELECT (column), (use ' , ' for CASE)
+```
+
+Orders the year by descending order (the default is ascending)(always after WHERE if present)`
+
+- **`CASE`** - Creates different outputs (SQL if-then) usually in SELECT statement (ends with end) SELECT (column), (use ' , ' for CASE)
+
+```
   CASE
   WHEN (condition) THEN (output)
   WHEN (condition) THEN (output)
   ELSE (output)
   END (use END AS (new column name) to shorten column name)
   FROM (table)
-- HAVING - SImilar to WHERE but used with aggregate functions. (comes after GROUP BY, but before ORDER BY and LIMIT)
+
+```
+
+- **`HAVING`** - SImilar to WHERE but used with aggregate functions. (comes after GROUP BY, but before ORDER BY and LIMIT)
+
+```
   SELECT COUNT(solumn name) FROM (table)
   HAVING COUNT(column name) (condition);
-  **_EXAMPLE OF MULTIPLE COMMANDS QUERY_**
-  SELECT name, year, imdb_rating,
-  CASE
-  WHEN imdb_rating > 7 THEN 'Great'
-  WHEN imdb_rating > 5 THEN 'Alright'
-  WHEN imdb_rating IS NULL THEN 'null'
-  ELSE 'Not good'
-  END AS 'Score'
-  FROM movies
-  WHERE year < 2010
-  ORDER BY imdb_rating DESC
-  LIMIT 10;
+
+**_EXAMPLE OF MULTIPLE COMMANDS QUERY_**
+SELECT name, year, imdb_rating,
+CASE
+WHEN imdb_rating > 7 THEN 'Great'
+WHEN imdb_rating > 5 THEN 'Alright'
+WHEN imdb_rating IS NULL THEN 'null'
+ELSE 'Not good'
+END AS 'Score'
+FROM movies
+WHERE year < 2010
+ORDER BY imdb_rating DESC
+LIMIT 10;
+```
 
 ---
 
-3. ------------OPERATORS------------
+## OPERATORS
 
-- IS NULL - Unknown values/missing values
+- **`IS NULL`** - Unknown values/missing values
 
-- IS NOT NULL - Checks for values not NULL
-- AND - Displays rows if ALL conditions are true
-- OR - Displays rows if ANY condition is true
-- LIKE Operator: - Used with WHERE to match specific pattern
+- **`IS NOT NULL`** - Checks for values not NULL
+
+- **`AND`** - Displays rows if ALL conditions are true
+
+- **`OR`** - Displays rows if ANY condition is true
+
+- **`LIKE`** - Used with WHERE to match specific pattern
+
+```
   SELECT names FROM (table)
   WHERE name LIKE 'star%';
   --(Matches names from table that begin with 'star'. Can also be used like '%star%.)
-- BETWEEN: - Filters results with a certain range
-  SELECT \* FROM (table)
+```
+
+- **`BETWEEN`** - Filters results with a certain range
+
+```
+  SELECT * FROM (table)
   WHERE number BETWEEN 1 AND 10
   --(Filters numbers/ range from 1 up to and including 10)
+```
 
 ---
 
-4. ------------AGGREGATE FUNCTIONS------------
+## AGGREGATE FUNCTIONS
 
-   \*AGGREGATE FUNCTIONS - perform a calculation on a set of values and return a single value
+- **AGGREGATE FUNCTIONS** - perform a calculation on a set of values and return a single value
 
-- COUNT( ) - Count the number of rows (non empty values)
+- `COUNT( )` - Count the number of rows (non empty values)
 
-  COUNT(\*) - Counts every row (includes null)
-  COUNT((column name)) - Counts rows in the column (doesnt include null)
+- `COUNT(\*)` - Counts every row (includes null)
+- `COUNT((column name))` - Counts rows in the column (doesnt include null)
 
-- SUM( ) - Sum of values in that column
-  SELECT SUM(column name) FROM (table);
-- MAX( ) - Largest value in that column
+- `SUM( )` - Sum of values in that column
+  `SELECT` SUM(column name) FROM (table);
+- `MAX( )` - Largest value in that column
+
+```
   SELECT MAX(column name) FROM (table);
-- MIN( ) - Smallest value in a column
+```
+
+- `MIN( )` - Smallest value in a column
   SELECT MIN(column name) FROM (table name);
-- AVG( ) - Calculate average of values in a column
+- `AVG( )` - Calculate average of values in a column
   SELECT AVG(column name) FROM (table name);
-- ROUND( ) - Rounds values in a column to number of decimal places specified by integer (takes 2 arguments column name, and an integer)
+- `ROUND( )` - Rounds values in a column to number of decimal places specified by integer (takes 2 arguments column name, and an integer)
   SELECT name, ROUND(price, integer) FROM (table);
   (returns names and the rounded price)
   \*GROUP BY( ) - Arrange identical data into groups Used with aggregate functions in collaboration with SELECT. (comes after any WHERE but before ORDER BY or LIMIT)
+
+```
   SELECT column_name FROM table_name
   GROUP BY column_name
   ORDER BY column_name;
-- YEAR( )- Filter by year from a DATE column.
+```
+
+- `YEAR( )`- Filter by year from a DATE column.
   WHERE YEAR (date_column_name) > 1990;
   (Shows rows with the year over 1990)
 
 ---
 
-5. ------------ WINDOW FUNCTIONS -------------
+## WINDOW FUNCTIONS
 
-- WINDOW FUNCTIONS - perform calculations across a set of table rows related to the current row. (can use window and aggregate functions)
+- `WINDOW FUNCTIONS` - perform calculations across a set of table rows related to the current row. (can use window and aggregate functions)
 
 - OVER( ) - Defines the window of rows for the function to operate on, specifying partitioning and ordering. SQL processes each row within this window according to the specified function (like SUM, AVG, etc.) SUM(column) OVER (PARTITION BY, ORDER BY) can also use just PARTITION BY or ORDER BY.
 - PARTITION - dividing the result set into smaller subsets, or "partitions," based on the values of one or more columns. Each partition is then processed independently by the window function.
@@ -290,6 +319,10 @@ VALUES (value1, value2)
    FIELDS TERMINATED BY ',' -- fields(columns) seperated by comma
    ENCLOSED BY '"' -- each field enclosed with double quotes
    LINES TERMINATED BY 'n\' -- each row terminated by new line
+
+```
+
+```
 
 ```
 
