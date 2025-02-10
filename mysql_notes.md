@@ -1,14 +1,16 @@
-SQL NOTES
+# SQL NOTES
 
-1. MANIPULATION
-2. QUERIES
-3. OPERATORS
-4. AGGREGATE FUNCTIONS
-5. WINDOW FUNCTIONS
-6. MULTIPLE TABLES
-7. STRING FUNCTIONS
-8. DATE AND TIME FUNCTIONS
-9. DATA COMMANDS
+## MySQL
+
+1. [MANIPULATION](#manipulation)
+2. [QUERIES](#queries)
+3. [OPERATORS](#operators)
+4. [AGGREGATE FUNCTIONS](#aggregate-functions)
+5. [WINDOW FUNCTIONS](#window-functions)
+6. [MULTIPLE TABLES](#multiple-tables)
+7. [STRING FUNCTIONS](#string-functions)
+8. [DATE AND TIME FUNCTIONS](#date-andtime-functions)
+9. [DATA COMMANDS](#data-commands)
 
 ---
 
@@ -26,6 +28,8 @@ SQL NOTES
 
   - `DEFAULT` assigns a default value for the column when no value is specified
 
+</br>
+
 - **`CREATE TABLE`** - statement creates a new table in a database.
 
 ```
@@ -36,6 +40,8 @@ SQL NOTES
     age INTEGER DEFAULT 10
     );
 ```
+
+</br>
 
 - **`INSERT INTO`** - adds a new row to a table.
 
@@ -53,6 +59,8 @@ INSERT INTO table_name (column1, column2)
 VALUES (value1, value2)
 
 ```
+
+</br>
 
 - **`ALTER TABLE`** - To modify the columns of an existing table.
 
@@ -74,6 +82,8 @@ VALUES (value1, value2)
   WHERE column = vlaue
 ```
 
+</br>
+
 - **`UPDATE`** - used to edit rows in a table with SET to indicate the column and new value
 
 ```
@@ -82,7 +92,7 @@ VALUES (value1, value2)
   WHERE column = value
 ```
 
----
+### [BACK TO TOP](#mysql)
 
 ## QUERIES
 
@@ -97,12 +107,20 @@ VALUES (value1, value2)
   FROM (table)
 ```
 
+</br>
+
 - **`CONDITIONAL`** with WHERE clause:
+
+```
   SELECT FROM (table)
   WHERE (colum)( conditional) (ex:WHERE numbers < 5;)
+```
+
+</br>
+
 - **`WILD CARDS`**:
 
-  - **\_ Wild Card** - Matches any single unspecified character
+- **`_ Wild Card`** - Matches any single unspecified character
 
 ```
     SELECT name FROM movies
@@ -118,13 +136,17 @@ VALUES (value1, value2)
   --(Matches any movie that begins with 'the' followed by 0 or more characters)
 ```
 
+</br>
+
 - **`ORDER BY`**: - Used to sort a colum alphabetically or numerically by ASC or DESC
 
 ```SELECT FROM (table)
   ORDER BY year DESC;
-```
 
 Orders the year by descending order (the default is ascending)(always after WHERE if present)`
+```
+
+</br>
 
 - **`CASE`** - Creates different outputs (SQL if-then) usually in SELECT statement (ends with end) SELECT (column), (use ' , ' for CASE)
 
@@ -138,12 +160,16 @@ Orders the year by descending order (the default is ascending)(always after WHER
 
 ```
 
+</br>
+
 - **`HAVING`** - SImilar to WHERE but used with aggregate functions. (comes after GROUP BY, but before ORDER BY and LIMIT)
 
 ```
   SELECT COUNT(solumn name) FROM (table)
   HAVING COUNT(column name) (condition);
 ```
+
+</br>
 
 **EXAMPLE OF MULTIPLE COMMANDS QUERY**
 
@@ -161,7 +187,7 @@ ORDER BY imdb_rating DESC
 LIMIT 10;
 ```
 
----
+### [BACK TO TOP](#mysql)
 
 ## OPERATORS
 
@@ -181,6 +207,8 @@ LIMIT 10;
   --(Matches names from table that begin with 'star'. Can also be used like '%star%.)
 ```
 
+</br>
+
 - **`BETWEEN`** - Filters results with a certain range
 
 ```
@@ -189,7 +217,7 @@ LIMIT 10;
   --(Filters numbers/ range from 1 up to and including 10)
 ```
 
----
+### [BACK TO TOP](#mysql)
 
 ## AGGREGATE FUNCTIONS
 
@@ -208,16 +236,32 @@ LIMIT 10;
   SELECT MAX(column name) FROM (table);
 ```
 
+</br>
+
 - `MIN( )` - Smallest value in a column
+
+```
   SELECT MIN(column name) FROM (table name);
+```
+
+</br>
+
 - `AVG( )` - Calculate average of values in a column
+
+```
   SELECT AVG(column name) FROM (table name);
+```
+
+</br>
+
 - `ROUND( )` - Rounds values in a column to number of decimal places specified by integer (takes 2 arguments column name, and an integer)
 
 ```
   SELECT name, ROUND(price, integer) FROM (table);
   (returns names and the rounded price)
 ```
+
+</br>
 
 - `GROUP BY( )` - Arrange identical data into groups Used with aggregate functions in collaboration with SELECT. (comes after any WHERE but before ORDER BY or LIMIT)
 
@@ -227,6 +271,8 @@ LIMIT 10;
   ORDER BY column_name;
 ```
 
+</br>
+
 - `YEAR( )`- Filter by year from a DATE column.
 
 ```
@@ -234,19 +280,34 @@ LIMIT 10;
   (Shows rows with the year over 1990)
 ```
 
----
+### [BACK TO TOP](#mysql)
 
 ## WINDOW FUNCTIONS
 
 - `WINDOW FUNCTIONS` - perform calculations across a set of table rows related to the current row. (can use window and aggregate functions)
 
-- `OVER( )` - Defines the window of rows for the function to operate on, specifying partitioning and ordering. SQL processes each row within this window according to the specified function (like SUM, AVG, etc.) SUM(column) OVER (PARTITION BY, ORDER BY) can also use just PARTITION BY or ORDER BY.
+- `OVER( )` - Defines the window of rows for the function to operate on, specifying partitioning and ordering. SQL processes each row within this window according to the specified function (like SUM, AVG, etc.)
+
+```
+SUM(column) OVER (PARTITION BY, ORDER BY)
+-- can also use just PARTITION BY or ORDER BY.
+```
+
+</br>
+
 - `PARTITION` - dividing the result set into smaller subsets, or "partitions," based on the values of one or more columns. Each partition is then processed independently by the window function.
 
 ```
   SUM(available_copies) OVER (PARTITION BY category)
-  The SUM() function calculates the total number of available copies within each partition (i.e., for each category)
+  -- The SUM() function calculates the total number of available copies within each partition (i.e., for each category)
+
+  MIN(publication_date)
+  OVER (PARTITION BY category ORDER BY publication_date)
+  -- This calculates the minimum publication date within each category.
+
 ```
+
+</br>
 
 - `ROW NUMBER( )` - assign a unique row number to each row, ordered by the title column.
 
@@ -255,20 +316,29 @@ LIMIT 10;
   FROM table_name;
 ```
 
+</br>
+
 - `RANK( )` - Assigns a rank to each row within a partition of a result set. Rows with equal values receive the same rank, and the next rank is incremented by the number of tied rows.
 
 ```
   RANK() OVER (ORDER BY publication_date)
-  This assigns a rank to each book based on the publication_date. Books with the same publication date receive the same rank, and the next rank is incremented by the number of tied rows.
+  This assigns a rank to each book based on the publication_date.
+  Books with the same publication date receive the same rank
+  The next rank is incremented by the number of tied rows.
 ```
+
+</br>
 
 - `DENSE RANK( )` - Similar to RANK(), but the next rank is incremented by 1 regardless of the number of tied rows.
 
 - `NTILE(n)`- helps you distribute rows into a specified number of groups, making it easier to analyze data in segments. (used like percentiles)
   - `(n)` - number of segments
+
+</br>
+
 - `LEAD( )` - provides access to a row at a specified physical offset following the current row within the result set (take this table, move forward by this much, use this default (if provided)
   **EXAMPLE:**
-  `LEAD`(column, offset, default)
+  `LEAD`(column, offset)
   `column`: The column from which to retrieve the value.
   `offset`: The number of rows forward from the current row (default is 1).
   `default`: The value to return if the offset goes beyond the result set (optional).
@@ -280,66 +350,67 @@ LIMIT 10;
 ```
 
 - `LAG( )` - Opposite of LEAD. LAG looks back and LEAD looks forward.
-- **WINDOW FUNCTION EXAMPLES**
 
-```
-  MIN(publication_date) OVER (PARTITION BY category ORDER BY publication_date) \*This calculates the minimum publication date within each category.
-```
+### [BACK TO TOP](#mysql)
 
 ---
 
-6. -------------- MULTIPLE TABLES---------------
+## MULTIPLE TABLES
 
 **USING TABLES AND COLUMN NAMES**- table_name.column_name
 
-- `JOIN` - Joins tables with another table (will only return results matching the condition specified by ON). (columns from tables must match) -`INNER JOIN` is the default JOIN
-  - `LEFT JOIN` keeps all rows from the first table even if there is no matching rows.
-    (Will omit the unmatched row from the second table)
+- `JOIN` - Joins tables with another table (will only return results matching the condition specified by ON). (columns from tables must match)
+  - `INNER JOIN` is the default JOIN
+  - `LEFT JOIN` keeps all rows from the first table even if there is no matching rows.(Will omit the unmatched row from the second table)
   - `CROSS JOIN` used to combine each row form one table with each row from another
     table. (helpful for creating all possible combinations for the rows in two tables)
+
+</br>
+
 - `ON` - How to combine the tables (what to match the column information with)
-  ``
-  **EXAMPLE**
+
+**EXAMPLE 1**
 
 ```
-
-```
-
-SELECT \* FROM (table name)
+SELECT * FROM (table name)
 JOIN (other table name)
 ON table name.column name = table name.column name;
-
 ```
 
-**EXAMPLE**
+**EXAMPLE 2**
 
 ```
-
 SELECT table name.column name, other_tablename.columnname
 FROM (table name)
 JOIN (other table name)
 ON table.column = other_table.column
-
 ```
 
-```
+</br>
 
-`UNION` - Combins results from multiple SELECT and filters duplicates
+- `UNION` - Combins results from multiple SELECT and filters duplicates
 
 ```
 SELECT column_name (Tables must have same number of columns)
-FROM table_name (Columns must have the same data types in the same
-UNION order as the first table)
+FROM table_name (Columns must have the same data types)
+UNION
 SELECT column_name
 FROM table_name;
 ```
 
+</br>
+
 - `FOREIGN KEY` - PRIMARY KEY for one table appears in a differnet table.
 - `WITH` - Stores the result of a query in a temporary table using a nickname.
-  WITH (new_temp_name) AS (
-  SELECT \* FROM (table_name)
 
----
+```
+WITH (new_temp_name) AS (
+SELECT * FROM (table_name)
+```
+
+</br>
+
+### [BACK TO TOP](#mysql)
 
 ## STRING FUNCTIONS
 
@@ -348,9 +419,12 @@ FROM table_name;
 ```
 SELECT CONCAT('(', col1, ', ''', col2, ''', ''', 'name', ''')')
 FROM your_table;
-OUTPUT:
-(123, 'example', 'name')
+
+-- OUTPUT:
+-- (col1, 'col2', 'name')
 ```
+
+</br>
 
 ---
 
@@ -370,14 +444,16 @@ OUTPUT:
 
 ## DATA COMMANDS
 
-`INTO OUTFILE` - Output of select will be written to a file
+- `INTO OUTFILE` - Output of select will be written to a file
+
 **CSV EXAMPLE**
 
 ```
-SELECT \* FROM table_name
+SELECT * FROM table_name
 INTO OUTFILE 'C:\path_to_file.csv'
-
-FIELDS TERMINATED BY ',' -- fields(columns) seperated by comma
-ENCLOSED BY '"' -- each field enclosed with double quotes
-LINES TERMINATED BY 'n\' -- each row terminated by new line
+FIELDS TERMINATED BY ';' -- (fields(columns) seperated by semi comma)
+ENCLOSED BY '"' -- (each field enclosed with double quotes)
+LINES TERMINATED BY 'n\' -- (each row terminated by new line)
 ```
+
+### [BACK TO TOP](#mysql)
