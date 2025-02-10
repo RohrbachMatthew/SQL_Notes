@@ -10,23 +10,25 @@ SQL NOTES
 8. DATE AND TIME FUNCTIONS
 9. DATA COMMANDS
 
-COMMANDS / SYNTAX:
+### COMMANDS / SYNTAX:
 
-## 1. ------------MANIPULATION----------
+---
 
-- ### COLUMN CONSTRAINTS:
+## MANIPULATION
 
-  - PRIMARY KEY constraint can be used to uniquely identify the row.
+- **`COLUMN CONSTRAINTS`**:
+
+  - `PRIMARY KEY` constraint can be used to uniquely identify the row.
     (There can only be one PRIMARY KEY column per table & Cannot be nul)
 
-  - UNIQUE columns have a different value for every row.
+  - `UNIQUE` columns have a different value for every row.
     (Can have multiple unique columns.)
 
-  - NOT NULL columns must have a value.
-  - DEFAULT assigns a default value for the column when no value is specified
+  - `NOT NULL` columns must have a value.
 
-- CREATE TABLE - statement creates a new table in a database.
-  CREATE TABLE table name (column 1 data type, column 2 data type.....)
+  - `DEFAULT` assigns a default value for the column when no value is specified
+
+- **`CREATE TABLE`** - statement creates a new table in a database.
 
 ```
     CREATE TABLE table name (
@@ -37,16 +39,16 @@ COMMANDS / SYNTAX:
     );
 ```
 
-- **INSERT INTO** - adds a new row to a table.
+- **`INSERT INTO`** - adds a new row to a table.
 
-- Insert into columns in order
+- **Insert into columns in order:**
 
 ```
   INSERT INTO table_name
   VALUES (value_1, value_2)
 ```
 
-- Insert into clomuns by name
+- **Insert into clomuns by name**
 
 ```
 INSERT INTO table_name (column1, column2)
@@ -54,7 +56,7 @@ VALUES (value1, value2)
 
 ```
 
-- **ALTER TABLE** - To modify the columns of an existing table.
+- **`ALTER TABLE`** - To modify the columns of an existing table.
 
 ```
   ALTER TABLE table_name
@@ -63,41 +65,63 @@ VALUES (value1, value2)
   CHANGE COLUMN old_column_name new_column_name data_type;
 ```
 
-- ADD COLUMN - Used to add a new column. - CHANGE COLUMN - Used to rename a column.
-  \*DELETE - Used to delete rows in a table. (IF not using WHERE all records are deleted)
+- **`ADD COLUMN`** - Used to add a new column.
+
+- **`CHANGE COLUMN`** - Used to rename a column.
+
+- **`DELETE`** - Used to delete rows in a table. **(IF not using WHERE, all records are deleted)**
+
+```
   DELETE FROM table_name
   WHERE column = vlaue
+```
 
-- UPDATE - used to edit rows in a table with SET to indicate the column and new value
+- **`UPDATE`\*** - used to edit rows in a table with SET to indicate the column and new value
+
+```
   UPDATE tabel_name
   SET column1 = value1, column 2 = value2 OR column1 = value - 1
   WHERE column = value
+```
 
 ---
 
-2. ------------QUERIES------------
+## QUERIES
 
-- SELECT- Selects columns (use \* for all columns)(can select multiple(SELECT name, year))
+- **`SELECT`**- Selects columns (use \* for all columns)(can select multiple(SELECT name, year))
 
-- LIMIT - max number of rows to be displayed
-- AS - Renames a column or table (used normally before FROM)
-- DISTINCT: - Filters out values.
+- **`LIMIT`** - max number of rows to be displayed
+- **`AS`** - Renames a column or table (used normally before FROM)
+- **`DISTINCT`**: - Filters out values.
+
+```
   SELECT DISTINCT (value)
   FROM (table)
-- CONDITIONAL with WHERE clause:
-  SELECT \*FROM (table)
+```
+
+- **`CONDITIONAL`** with WHERE clause:
+  SELECT FROM (table)
   WHERE (colum)( conditional) (ex:WHERE numbers < 5;)
-- WILD CARDS:
-  - \_ Wild Card - Matches any single unspecified character
+- **`WILD CARDS`**:
+
+  - **\_ Wild Card** - Matches any single unspecified character
+
+```
     SELECT name FROM movies
     WHERE name LIKE '\_ove';
-    --(Matches anything with a single character followed by 'ove')
-  - % Wild Card - Matches 0 or more of any unspecified number of charcters
-    SELECT name FROM movies
-    WHERE name LIKE 'The%';
-    --(Matches any movie that begins with 'the' followed by 0 or more characters)
+   (Matches anything with a single character followed by 'ove')
+```
+
+- **% Wild Card** - Matches 0 or more of any unspecified number of charcters
+
+```
+  SELECT name FROM movies
+  WHERE name LIKE 'The%';
+  --(Matches any movie that begins with 'the' followed by 0 or more characters)
+```
+
 - ORDER BY: - Used to sort a colum alphabetically or numerically by ASC or DESC
-  SELECT \* FROM (table)
+  SELECT FROM (table)
   ORDER BY year DESC;
   --(Orders the year by descending order (the default is ascending)(always after WHERE if present)
 - CASE - Creates different outputs (SQL if-then) usually in SELECT statement (ends with end) SELECT (column), (use ' , ' for CASE)
