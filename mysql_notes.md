@@ -143,8 +143,11 @@ Orders the year by descending order (the default is ascending)(always after WHER
 ```
   SELECT COUNT(solumn name) FROM (table)
   HAVING COUNT(column name) (condition);
+```
 
-**_EXAMPLE OF MULTIPLE COMMANDS QUERY_**
+**EXAMPLE OF MULTIPLE COMMANDS QUERY**
+
+```
 SELECT name, year, imdb_rating,
 CASE
 WHEN imdb_rating > 7 THEN 'Great'
@@ -190,7 +193,7 @@ LIMIT 10;
 
 ## AGGREGATE FUNCTIONS
 
-- **AGGREGATE FUNCTIONS** - perform a calculation on a set of values and return a single value
+**AGGREGATE FUNCTIONS** - perform a calculation on a set of values and return a single value
 
 - `COUNT( )` - Count the number of rows (non empty values)
 
@@ -210,9 +213,13 @@ LIMIT 10;
 - `AVG( )` - Calculate average of values in a column
   SELECT AVG(column name) FROM (table name);
 - `ROUND( )` - Rounds values in a column to number of decimal places specified by integer (takes 2 arguments column name, and an integer)
+
+```
   SELECT name, ROUND(price, integer) FROM (table);
   (returns names and the rounded price)
-  \*GROUP BY( ) - Arrange identical data into groups Used with aggregate functions in collaboration with SELECT. (comes after any WHERE but before ORDER BY or LIMIT)
+```
+
+- `GROUP BY( )` - Arrange identical data into groups Used with aggregate functions in collaboration with SELECT. (comes after any WHERE but before ORDER BY or LIMIT)
 
 ```
   SELECT column_name FROM table_name
@@ -221,8 +228,11 @@ LIMIT 10;
 ```
 
 - `YEAR( )`- Filter by year from a DATE column.
+
+```
   WHERE YEAR (date_column_name) > 1990;
   (Shows rows with the year over 1990)
+```
 
 ---
 
@@ -230,100 +240,144 @@ LIMIT 10;
 
 - `WINDOW FUNCTIONS` - perform calculations across a set of table rows related to the current row. (can use window and aggregate functions)
 
-- OVER( ) - Defines the window of rows for the function to operate on, specifying partitioning and ordering. SQL processes each row within this window according to the specified function (like SUM, AVG, etc.) SUM(column) OVER (PARTITION BY, ORDER BY) can also use just PARTITION BY or ORDER BY.
-- PARTITION - dividing the result set into smaller subsets, or "partitions," based on the values of one or more columns. Each partition is then processed independently by the window function.
-  -SUM(available_copies) OVER (PARTITION BY category): The SUM() function calculates
-  the total number of available copies within each partition (i.e., for each category).
-- ROW NUMBER( ) - assign a unique row number to each row, ordered by the title column.
-  -SELECT column1 ROW NUMBER () OVER (ORDER BY column1) AS 'New_column_name'
+- `OVER( )` - Defines the window of rows for the function to operate on, specifying partitioning and ordering. SQL processes each row within this window according to the specified function (like SUM, AVG, etc.) SUM(column) OVER (PARTITION BY, ORDER BY) can also use just PARTITION BY or ORDER BY.
+- `PARTITION` - dividing the result set into smaller subsets, or "partitions," based on the values of one or more columns. Each partition is then processed independently by the window function.
+
+```
+  SUM(available_copies) OVER (PARTITION BY category)
+  The SUM() function calculates the total number of available copies within each partition (i.e., for each category)
+```
+
+- `ROW NUMBER( )` - assign a unique row number to each row, ordered by the title column.
+
+```
+  SELECT column1 ROW NUMBER () OVER (ORDER BY column1) AS 'New_column_name'
   FROM table_name;
-- RANK( ) - Assigns a rank to each row within a partition of a result set. Rows with equal values receive the same rank, and the next rank is incremented by the number of tied rows.
-  - RANK() OVER (ORDER BY publication_date): This assigns a rank to each book based on the publication_date. Books with the same publication date receive the same rank, and the next rank is incremented by the number of tied rows.
-- DENSE RANK( ) - Similar to RANK(), but the next rank is incremented by 1 regardless of the number of tied rows.
-- NTILE(n)- helps you distribute rows into a specified number of groups, making it easier to analyze data in segments. (used like percentiles)
-  (n) - number of segments
-- LEAD( ) - provides access to a row at a specified physical offset following the current row within the result set (take this table, move forward by this much, use this default (if provided)
-  - LEAD(column, offset, default)
-    column: The column from which to retrieve the value.
-    offset: The number of rows forward from the current row (default is 1).
-    default: The value to return if the offset goes beyond the result set (optional).
-  - SELECT column1, column2,
+```
+
+- `RANK( )` - Assigns a rank to each row within a partition of a result set. Rows with equal values receive the same rank, and the next rank is incremented by the number of tied rows.
+
+```
+  RANK() OVER (ORDER BY publication_date)
+  This assigns a rank to each book based on the publication_date. Books with the same publication date receive the same rank, and the next rank is incremented by the number of tied rows.
+```
+
+- `DENSE RANK( )` - Similar to RANK(), but the next rank is incremented by 1 regardless of the number of tied rows.
+
+- `NTILE(n)`- helps you distribute rows into a specified number of groups, making it easier to analyze data in segments. (used like percentiles)
+  - `(n)` - number of segments
+- `LEAD( )` - provides access to a row at a specified physical offset following the current row within the result set (take this table, move forward by this much, use this default (if provided)
+  **EXAMPLE:**
+  `LEAD`(column, offset, default)
+  `column`: The column from which to retrieve the value.
+  `offset`: The number of rows forward from the current row (default is 1).
+  `default`: The value to return if the offset goes beyond the result set (optional).
+
+```
+    SELECT column1, column2,
     LEAD(column2, 1) OVER (ORDER BY column1) AS next_column2
     FROM table1;
-- LAG( ) - Opposite of LEAD. LAG looks back and LEAD looks forward.
-- WINDOW FUNCTION EXAMPLES:
+```
+
+- `LAG( )` - Opposite of LEAD. LAG looks back and LEAD looks forward.
+- **WINDOW FUNCTION EXAMPLES**
+
+```
   MIN(publication_date) OVER (PARTITION BY category ORDER BY publication_date) \*This calculates the minimum publication date within each category.
+```
 
 ---
 
 6. -------------- MULTIPLE TABLES---------------
 
-- USING TABLES AND COLUMN NAMES- table_name.column_name
+**USING TABLES AND COLUMN NAMES**- table_name.column_name
 
-- JOIN - Joins tables with another table (will only return results matching the condition specified by ON). (columns from tables must match)
-  -INNER JOIN is the default JOIN
-  - LEFT JOIN keeps all rows from the first table even if there is no matching rows.
+- `JOIN` - Joins tables with another table (will only return results matching the condition specified by ON). (columns from tables must match) -`INNER JOIN` is the default JOIN
+  - `LEFT JOIN` keeps all rows from the first table even if there is no matching rows.
     (Will omit the unmatched row from the second table)
-  - CROSS JOIN used to combine each row form one table with each row from another
+  - `CROSS JOIN` used to combine each row form one table with each row from another
     table. (helpful for creating all possible combinations for the rows in two tables)
-- ON - How to combine the tables (what to match the column information with)
-  SELECT * FROM (table name)
-  JOIN (other table name)
-  ON table name.column name = table name.column name;
-  SELECT table name.column name, other_tablename.columnname
-  FROM (table name)
-  JOIN (other table name)
-  ON table.column = other_table.column
-  *UNION - Combins results from multiple SELECT and filters duplicates
-  SELECT column_name (Tables must have same number of columns)
-  FROM table_name (Columns must have the same data types in the same
-  UNION order as the first table)
-  SELECT column_name
-  FROM table_name;
-- FOREIGN KEY - PRIMARY KEY for one table appears in a differnet table.
-- WITH - Stores the result of a query in a temporary table using a nickname.
+- `ON` - How to combine the tables (what to match the column information with)
+  ``
+  **EXAMPLE**
+
+```
+
+```
+
+SELECT \* FROM (table name)
+JOIN (other table name)
+ON table name.column name = table name.column name;
+
+```
+
+**EXAMPLE**
+
+```
+
+SELECT table name.column name, other_tablename.columnname
+FROM (table name)
+JOIN (other table name)
+ON table.column = other_table.column
+
+```
+
+```
+
+`UNION` - Combins results from multiple SELECT and filters duplicates
+
+```
+SELECT column_name (Tables must have same number of columns)
+FROM table_name (Columns must have the same data types in the same
+UNION order as the first table)
+SELECT column_name
+FROM table_name;
+```
+
+- `FOREIGN KEY` - PRIMARY KEY for one table appears in a differnet table.
+- `WITH` - Stores the result of a query in a temporary table using a nickname.
   WITH (new_temp_name) AS (
   SELECT \* FROM (table_name)
 
 ---
 
-7. ------------STRING FUNCTIONS------------
+## STRING FUNCTIONS
 
-- CONCAT - Used to connect or join multiple strings to a single string.
-  SELECT CONCAT('(', col1, ', ''', col2, ''', ''', 'name', ''')')
-  FROM your_table;
-  OUTPUT:
-  (123, 'example', 'name')
+- `CONCAT` - Used to connect or join multiple strings to a single string.
+
+```
+SELECT CONCAT('(', col1, ', ''', col2, ''', ''', 'name', ''')')
+FROM your_table;
+OUTPUT:
+(123, 'example', 'name')
+```
 
 ---
 
-8. ------------DATE ANDTIME FUNCTIONS -------------
+## DATE ANDTIME FUNCTIONS
 
-- CURDATE( ) - Returns the current date
+- `CURDATE( )` - Returns the current date
 
-- DATE_SUB(date, INTERAL) - Subtracts specified time interval from a date
-- DATE_ADD(date, INTERVAL) - Adds specific time interval to a date
-- NOW( ) - Returns current date & time
-- YEAR( date ) - Extracts the year from a date
-- MONTH ( date ) - Extracts month from a date
-  \*DAY( date ) - Extracts the day of the month from date
-- DATEDIFF( date1, date2 ) - Returns the difference in days between 2 dates
+- `DATE_SUB(date, INTERAL)` - Subtracts specified time interval from a date
+- `DATE_ADD(date, INTERVAL)` - Adds specific time interval to a date
+- `NOW( )` - Returns current date & time
+- `YEAR( date )` - Extracts the year from a date
+- `MONTH ( date )` - Extracts month from a date
+- `DAY( date )` - Extracts the day of the month from date
+- `DATEDIFF( date1, date2 )` - Returns the difference in days between 2 dates
 
 ---
 
-9. --------------DATA COMMANDS-------------
-   INTO OUTFILE - Output of select will be written to a file
-   CSV EXAMPLE:
-   SELECT \* FROM table_name
-   INTO OUTFILE 'C:\path_to_file.csv'
-   FIELDS TERMINATED BY ',' -- fields(columns) seperated by comma
-   ENCLOSED BY '"' -- each field enclosed with double quotes
-   LINES TERMINATED BY 'n\' -- each row terminated by new line
+## DATA COMMANDS
+
+`INTO OUTFILE` - Output of select will be written to a file
+**CSV EXAMPLE**
 
 ```
+SELECT \* FROM table_name
+INTO OUTFILE 'C:\path_to_file.csv'
 
-```
-
-```
-
+FIELDS TERMINATED BY ',' -- fields(columns) seperated by comma
+ENCLOSED BY '"' -- each field enclosed with double quotes
+LINES TERMINATED BY 'n\' -- each row terminated by new line
 ```
