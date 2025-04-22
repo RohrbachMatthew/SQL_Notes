@@ -1,110 +1,737 @@
-{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
-{\*\generator Riched20 10.0.22621}\viewkind4\uc1 
-\pard\sa200\sl276\slmult1\b\f0\fs28\lang9 SQL NOTES\par
-\fs22 1. MANIPULATION\b0\par
-\b 2. QUERIES\par
-3. OPERATORS\par
-4. AGGREGATE FUNCTIONS\par
-5. WINDOW FUNCTIONS\par
-6.  MULTIPLE TABLES\par
-7. STRING FUNCTIONS\par
-8. DATE AND TIME FUNCTIONS\par
-9. DATA COMMANDS\par
-\b0\par
-\b COMMANDS / SYNTAX:\par
-\fs28 1. ------------MANIPULATION----------\par
-\fs22 * COLUMN CONSTRAINTS:\par
-\tab -PRIMARY KEY \b0 constraint can be used to uniquely identify the row.\line\tab\tab (There can only be one PRIMARY KEY column per table & Cannot be nul)\b\par
-\tab -UNIQUE \b0 columns have a different value for every row.\line\tab\tab (Can have multiple unique columns.)\b\par
-\tab -NOT NULL \b0 columns must have a value.\b\par
-\tab -DEFAULT \b0 assigns a default value for the column when no value is specified\par
-\b * CREATE TABLE - \b0 statement creates a new table in a database.\line\tab\b CREATE TABLE \b0 table name (column 1 data type, column 2 data type.....)\par
-\tab\b EXAMPLE:\line\b0\tab\b CREATE TABLE \b0 table name (\line\tab id \b INTEGER PRIMARY KEY\b0 ,\line\tab name \b TEXT UNIQUE\b0 ,\line\tab grade \b INTEGER NOT NULL\line\tab\b0 age \b INTEGER DEFAULT \b0 10\line\tab );\par
-\b * INSERT INTO - \b0 adds a new row to a table.\line\tab\b\i --- Insert into columns in order ---\i0\line\b0\tab\b INSERT INTO \b0 table_name\line\tab\b VALUES \b0 (value_1, value_2)\par
-\tab\b\i ---Insert into clomuns by name ---\b0\i0\line\tab\b INSERT INTO \b0 table_name (column1, column2)\b\line\tab VALUES \b0 (value1, value2)\par
-\b * ALTER TABLE - \b0 To modify the columns of an existing table.\line\tab\b ALTER TABLE\b0  table_name\b\line\tab ADD \b0 column_name data_type;\line\tab\b CHANGE COLUMN \b0 old_column_name new_column_name data_type;\line\tab\tab\b - ADD COLUMN - \b0 Used to add a new column.\line\tab\tab\b - CHANGE COLUMN \b0 - Used to rename a column.\par
-\b *DELETE - \b0 Used to delete rows in a table. (IF not using WHERE all records are deleted)\line\tab\b DELETE FROM\b0  table_name\b\line\tab WHERE \b0 column = vlaue\par
-\b * UPDATE - \b0 used to edit rows in a table with SET to indicate the column and new value\line\tab\b UPDATE \b0 tabel_name\line\tab\b SET \b0 column1 = value1, column 2 = value2 OR column1 = value - 1\line\tab\b WHERE \b0 column = value\par
-\par
-\b ---------------------------------------------------------------------------------------------------------------------------\b0\par
-\b\fs28 2. ------------QUERIES------------\par
-\fs22 * SELECT- \b0 Selects columns (use * for all columns)(can select multiple(SELECT name, year))\par
-\b * LIMIT - \b0 max number of rows to be displayed\par
-\b * AS - \b0 Renames a column or table (used normally before FROM)\par
-\b * DISTINCT\b0 : - Filters out values. \line\tab SELECT DISTINCT (value)\line\tab FROM (table)\par
-\b * CONDITIONAL with WHERE clause:\b0\line\tab SELECT *FROM (table)\line\tab WHERE (colum)( conditional) (ex:WHERE numbers < 5;)\par
-\b * WILD CARDS:\b0\line\tab - \b _ Wild Card \b0 - Matches any single unspecified character\line\tab\tab SELECT name FROM movies\line\tab\tab WHERE name LIKE '_ove'; \line\tab\tab --(Matches anything with a single character followed by 'ove')\par
-\tab\b - % Wild Card \b0 - Matches 0 or more of any unspecified number of charcters\line\tab\tab SELECT name FROM movies\line\tab\tab WHERE name LIKE 'The%';\line\tab\tab --(Matches any movie that begins with 'the' followed by 0 or more characters)\par
-\b * ORDER BY: \b0 - Used to sort a colum alphabetically or numerically by ASC or DESC\line\tab SELECT * FROM (table)\line\tab ORDER BY  year DESC;\line\tab --(Orders the year by descending order (the default is ascending)(always after WHERE \tab\tab    if present)\par
-\b * CASE - \b0 Creates different outputs (SQL if-then) usually in SELECT statement (ends with end)\tab SELECT (column), (use ' , ' for CASE)\line\tab CASE\line\tab   WHEN (condition) THEN (output)\line\tab   WHEN (condition) THEN (output)\line\tab   ELSE (output)\line\tab END (use END AS (new column name) to shorten column name)\line\tab FROM (table)\par
-\b * HAVING - \b0 SImilar to WHERE but used with aggregate functions. (comes after GROUP BY, but \tab\tab\tab\tab\tab\tab\tab\tab\tab before ORDER BY and LIMIT)\line\tab SELECT COUNT(solumn name) FROM (table)\line\tab HAVING COUNT(column name) (condition);\par
-\b ***EXAMPLE OF MULTIPLE COMMANDS QUERY***\par
-\tab SELECT \b0 name, year, imdb_rating,\line\tab\b CASE\b0\line\tab\b WHEN \b0 imdb_rating > 7 \b THEN \b0 'Great'\line\tab\b WHEN \b0 imdb_rating > 5 \b THEN \b0 'Alright'\line\tab\b WHEN \b0 imdb_rating \b IS NULL THEN\b0  'null'\line\tab\b ELSE \b0 'Not good'\line\tab\b END AS \b0 'Score'\line\tab\b FROM \b0 movies\line\tab\b WHERE \b0 year < 2010\line\tab\b ORDER BY \b0 imdb_rating \b DESC\b0\line\tab\b LIMIT \b0 10;\par
-\par
-\b ---------------------------------------------------------------------------------------------------------------------------\b0\par
-\b\fs28 3. ------------OPERATORS------------\par
-\fs22 * IS NULL - \b0 Unknown values/missing values\par
-\b * IS NOT NULL - \b0 Checks for values not NULL\par
-\b * AND \b0 - Displays rows if ALL conditions are true\par
-\b * OR - \b0 Displays rows if ANY condition is true\par
-\b * LIKE Operator: \b0 - Used with WHERE to match specific pattern\line\tab SELECT names FROM (table)\line\tab WHERE name LIKE 'star%';\line\tab --(Matches names from table that begin with 'star'. Can also be used like '%star%.)\par
-\b * BETWEEN: - \b0 Filters results with a certain range\line\tab SELECT * FROM (table)\line\tab WHERE number BETWEEN 1 AND 10\line\tab --(Filters numbers/ range from 1 up to and including 10)\par
-\par
-\b --------------------------------------------------------------------------------------------------------------------------\b0\par
-\b\fs28 4. ------------AGGREGATE FUNCTIONS------------\par
-\fs22 *AGGREGATE FUNCTIONS - \b0 perform a calculation on a set of values and return a single value\b\par
-* COUNT( ) - \b0 Count the number of rows (non empty values)\line\tab COUNT(*) - Counts every row (includes null)\line\tab COUNT((column name)) - Counts rows in the column (doesnt include null)\b\par
-* SUM(\b0  \b ) - \b0 Sum of values in that column\line\tab SELECT SUM(column name) FROM (table);\b\par
-* MAX(\b0  \b ) - \b0 Largest value in that column\line\tab SELECT MAX(column name) FROM (table);\b\par
-* MIN(\b0  \b ) - \b0 Smallest value in a column\line\tab SELECT MIN(column name) FROM (table name);\b\par
-* AVG( ) - \b0 Calculate average of values in a column\line\tab SELECT AVG(column name) FROM (table name);\par
-\b * ROUND( ) - \b0 Rounds values in a column to number of decimal places specified by integer \tab\tab\tab\tab (takes 2 arguments column name, and an integer)\line\tab SELECT name, ROUND(price, integer) FROM (table); \line\tab\tab\tab (returns names and the rounded price)\par
-\b *GROUP BY( ) - \b0 Arrange identical data into groups Used with aggregate functions in collaboration with SELECT. (comes after any WHERE but before ORDER BY or LIMIT)\line\tab\b SELECT\b0  column_name \b FROM \b0 table_name\line\tab\b GROUP BY \b0 column_name\line\tab\b ORDER BY \b0 column_name;\par
-\b * YEAR( )- \b0 Filter by year from a \b DATE \b0 column.\line\tab\b WHERE YEAR (\b0 date_column_name\b ) > \b0 1990;\line\tab (Shows rows with the year over 1990)\par
-\par
-\b ---------------------------------------------------------------------------------------------------------------------------\par
-\fs28 5. ------------ WINDOW FUNCTIONS -------------\par
-\fs22 * WINDOW FUNCTIONS - \b0 perform calculations across a set of table rows related to the current row. (can use window and aggregate functions)\par
-\b * OVER( ) - \b0 Defines the window of rows for the function to operate on, specifying \b partitioning\b0  and \b ordering. \b0 SQL processes each row within this window according to the specified function (like SUM, AVG, etc.) \b SUM(\b0 column\b ) OVER \b0 (\b PARTITION BY, ORDER BY\b0 ) can also use just \b PARTITION \b0 BY or \b ORDER \b0 BY.\b\par
-* PARTITION - \b0 dividing the result set into smaller subsets, or "\b partitions\b0 ," based on the values of one or more columns. Each \b partition \b0 is then processed independently by the \b window function\b0 .\line\tab -\b SUM\b0 (available_copies) \b OVER \b0 (\b PARTITION BY \b0 category): The \b SUM\b0 () function calculates\line\tab the total number of available copies within each \b partition \b0 (i.e., for each category).\par
-\b * ROW NUMBER( ) - \b0 assign a unique row number to each row, ordered by the title column.\line\tab -\b SELECT \b0 column1 \b ROW NUMBER () OVER \b0 (\b ORDER BY \b0 column1) \b AS \b0 'New_column_name' \line\tab\b FROM \b0 table_name;\par
-\b * RANK( ) - \b0 Assigns a rank to each row within a partition of a result set. Rows with equal values receive the same rank, and the next rank is incremented by the number of tied rows\b .\line\tab\b0 - \b RANK\b0 () \b OVER \b0 (\b ORDER BY \b0 publication_date): This assigns a rank to each book based \tab on the publication_date. Books with the same publication date receive the same rank, \tab and the next rank is incremented by the number of tied rows.\par
-\b * DENSE RANK( ) - \b0 Similar to \b RANK\b0 (), but the next rank is incremented by 1 regardless of the number of tied rows.\par
-\b * NTILE(n)- \b0 helps you distribute rows into a specified number of groups, making it easier to analyze data in segments. (used like percentiles)\line\tab\b (n) - \b0 number of segments \b\par
-* LEAD( ) - \b0 provides access to a row at a specified physical offset following the current row within the result set (take this table, move forward by this much, use this default (if provided)\line\tab - \b LEAD\b0 (column, offset, default)\line\tab\b column\b0 : The column from which to retrieve the value.\line\tab\b offset\b0 : The number of rows forward from the current row (default is 1).\line\tab\b default\b0 : The value to return if the offset goes beyond the result set (optional).\line\tab - \b SELECT \b0 column1, column2, \line\tab    \b LEAD\b0 (column2, 1) OVER (ORDER BY column1) AS next_column2\line\tab    \b FROM \b0 table1;\b\par
-* LAG( ) - \b0 Opposite of \b LEAD\b0 . \b LAG \b0 looks back and \b LEAD \b0 looks forward.\b\par
-*  WINDOW FUNCTION EXAMPLES:\line\b0\tab\b MIN\b0 (publication_date) \b OVER \b0 (\b PARTITION BY \b0 category \b ORDER BY \b0 publication_date)\tab *This calculates the minimum publication date within each category.\par
-\par
----------------------------------------------------------------------------------------------------------------------------\par
-\b\fs28 6. -------------- MULTIPLE TABLES---------------\par
-\fs22 * USING TABLES AND COLUMN NAMES- \b0 table_name.column_name\par
-\b * JOIN - \b0 Joins tables with another table (will only return results matching the condition \tab specified by ON).\line\tab -\b INNER JOIN \b0 is the default JOIN\par
-\tab\b - LEFT JOIN \b0 keeps all rows from the first table even if there is no matching rows.\line\tab\tab\tab (Will omit the unmatched row from the second table)\par
-\tab\b - CROSS JOIN \b0 used to combine each row form one table with each row from another\line\tab\tab table. (helpful for creating all possible combinations for the rows in two tables)\par
-\b * ON - \b0 How to combine the tables (what to match the column information with)\par
-\tab\b SELECT * FROM \b0 (table name)\line\tab\b JOIN \b0 (other table name)\line\tab\b ON \b0 table name.column name = table name.column name; \par
-\tab\b SELECT \b0 table name.column name, other_tablename.columnname\line\tab\b FROM \b0 (table name)\line\tab\b JOIN \b0 (other table name)\line\tab\b ON \b0 table.column = other_table.column\par
-\b *UNION - \b0 Combins results from multiple SELECT and filters duplicates\line\tab\b SELECT \b0 column_name\tab\tab (Tables must have same number of columns)\line\tab\b FROM \b0 table_name\tab\tab (Columns must have the same data types in the same\line\tab\b UNION\tab\tab\tab\tab\b0 order as the first table)\line\tab\b SELECT \b0 column_name\line\tab\b FROM \b0 table_name;\par
-\b * FOREIGN KEY - \b0 PRIMARY KEY for one table appears in a differnet table. \par
-\b * WITH - \b0 Stores the result of a query in a temporary table using a nickname.\line\tab\b WITH\b0  (new_temp_name) \b AS \b0 (\line\tab\b SELECT \b0 * \b FROM \b0 (table_name)\par
-\par
----------------------------------------------------------------------------------------------------------------------------\par
-\b\fs28 7. ------------STRING FUNCTIONS------------\b0\fs22\par
-\b * CONCAT - \b0 Used to connect or join multiple strings to a single string.\line\tab\b SELECT CONCAT(\b0 '(', col1, ', ''', col2, ''', ''', 'name', ''')'\b )\b0\line\tab\b FROM \b0 your_table;\line\tab OUTPUT:\line\tab (123, 'example', 'name')\par
-\par
----------------------------------------------------------------------------------------------------------------------------\par
-\b\fs28 8. ------------DATE ANDTIME FUNCTIONS -------------\par
-\fs22 * CURDATE( ) - \b0 Returns the current date\b\par
-* DATE_SUB(date, INTERAL) - \b0 Subtracts specified time interval from a date\b\par
-* DATE_ADD(date, INTERVAL) - \b0 Adds specific time interval to a date\b\par
-* NOW( ) - \b0 Returns current date & time\b\par
-* YEAR( date ) - \b0 Extracts the year from a date\b\par
-* MONTH ( date ) -\b0  Extracts month from a date\b\par
-*DAY( date ) - \b0 Extracts the day of the month from date\b\par
-* DATEDIFF( date1, date2 ) - \b0 Returns the difference in days between 2 dates\par
-\par
----------------------------------------------------------------------------------------------------------------\par
-\b\fs28 9. --------------DATA COMMANDS-------------\fs22\par
-INTO OUTFILE - \b0 Output of select will be written to a file\line\tab CSV EXAMPLE:\line\tab\b SELECT\b0  * \b FROM \b0 table_name\line\tab\b INTO OUTFILE\b0  'C:\\path_to_file.csv'\line\tab\b FIELDS TERMINATED BY \b0 ','  -- fields(columns) seperated by comma\line\tab\b ENCLOSED BY \b0 '"'  -- each field enclosed with double quotes\line\tab\b LINES TERMINATED BY \b0 'n\\'  -- each row terminated by new line\b\par
-}
- 
+{\rtf1\ansi\deff0\adeflang1025
+{\fonttbl{\f0\froman\fprq2\fcharset0 Times New Roman;}{\f1\froman\fprq2\fcharset2 Symbol;}{\f2\fswiss\fprq2\fcharset0 Arial;}{\f3\froman\fprq2\fcharset0 Calibri;}{\f4\fnil\fprq2\fcharset0 Microsoft YaHei;}{\f5\fnil\fprq2\fcharset0 Arial;}{\f6\fswiss\fprq0\fcharset128 Arial;}}
+{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;\red128\green128\blue128;\red192\green192\blue192;}
+{\stylesheet{\s0\snext0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033 Normal;}
+{\s15\sbasedon0\snext16\sb240\sa120\keepn\dbch\af4\dbch\af5\afs28\loch\f2\fs28 Heading;}
+{\s16\sbasedon0\snext16\sl276\slmult1\sb0\sa140 Text Body;}
+{\s17\sbasedon16\snext17\sl276\slmult1\sb0\sa140\dbch\af6 List;}
+{\s18\sbasedon0\snext18\sb120\sa120\noline\i\dbch\af6\afs24\ai\fs24 Caption;}
+{\s19\sbasedon0\snext19\noline\dbch\af6 Index;}
+}{\*\generator Neat_Office/6.2.8.2$Windows_x86 LibreOffice_project/}{\info{\creatim\yr0\mo0\dy0\hr0\min0}{\revtim\yr2025\mo2\dy7\hr16\min40}{\printim\yr0\mo0\dy0\hr0\min0}}{\*\userprops}\deftab720
+\viewscale100
+{\*\pgdsctbl
+{\pgdsc0\pgdscuse451\pgwsxn12240\pghsxn15840\marglsxn1440\margrsxn1440\margtsxn1440\margbsxn1440\pgdscnxt0 Default Style;}}
+\formshade{\*\pgdscno0}\paperh15840\paperw12240\margl1440\margr1440\margt1440\margb1440\sectd\sbknone\sectunlocked1\pgndec\pgwsxn12240\pghsxn15840\marglsxn1440\margrsxn1440\margtsxn1440\margbsxn1440\ftnbj\ftnstart1\ftnrstcont\ftnnar\aenddoc\aftnrstcont\aftnstart1\aftnnrlc
+{\*\ftnsep\chftnsep}\pgndec\pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa143{\b\rtlch \ltrch\loch\fs28\lang9\loch\f3\hich\af3
+SQL NOTES}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+1. MANIPULATION}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+2. QUERIES}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+3. OPERATORS}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+4. AGGREGATE FUNCTIONS}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+5. WINDOW FUNCTIONS}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+6.  MULTIPLE TABLES}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+7. STRING FUNCTIONS}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+8. DATE AND TIME FUNCTIONS}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+9. DATA COMMANDS}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+COMMANDS / SYNTAX:}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs28\lang9\loch\f3\hich\af3
+1. ------------MANIPULATION----------}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* COLUMN CONSTRAINTS:}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab -PRIMARY KEY }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+constraint can be used to uniquely identify the row.}{\rtlch \ltrch\loch
+\line }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab \tab (There can only be one PRIMARY KEY column per table & Cannot be nul)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab -UNIQUE }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+columns have a different value for every row.}{\rtlch \ltrch\loch
+\line }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab \tab (Can have multiple unique columns.)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab -NOT NULL }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+columns must have a value.}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab -DEFAULT }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+assigns a default value for the column when no value is specified}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* CREATE TABLE - }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+statement creates a new table in a database.}{\rtlch \ltrch\loch
+\line }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+CREATE TABLE }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+table name (column 1 data type, column 2 data type.....)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+EXAMPLE:}{\rtlch \ltrch\loch
+\line }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+CREATE TABLE }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+table name (}{\rtlch \ltrch\loch
+\line }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab id }{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+INTEGER PRIMARY KEY}{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+,}{\rtlch \ltrch\loch
+\line }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab name }{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+TEXT UNIQUE}{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+,}{\rtlch \ltrch\loch
+\line }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab grade }{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+INTEGER NOT NULL}{\rtlch \ltrch\loch
+\line }{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+age }{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+INTEGER DEFAULT }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+10}{\rtlch \ltrch\loch
+\line }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab );}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* INSERT INTO - }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+adds a new row to a table.}{\rtlch \ltrch\loch
+\line }{\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+--- Insert into columns in order ---}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+INSERT INTO }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+table_name}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+VALUES }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(value_1, value_2)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+---Insert into clomuns by name ---}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+INSERT INTO }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+table_name (column1, column2)}{\rtlch \ltrch\loch
+\line }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab VALUES }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(value1, value2)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* ALTER TABLE - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+To modify the columns of an existing table.}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ALTER TABLE}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ table_name}{\rtlch \ltrch\loch
+\line }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab ADD }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+column_name data_type;}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+CHANGE COLUMN }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+old_column_name new_column_name data_type;}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab \tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+- ADD COLUMN - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Used to add a new column.}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab \tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+- CHANGE COLUMN }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+- Used to rename a column.}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+*DELETE - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Used to delete rows in a table. (IF not using WHERE all records are deleted)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+DELETE FROM}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ table_name}{\rtlch \ltrch\loch
+\line }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab WHERE }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+column = vlaue}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* UPDATE - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+used to edit rows in a table with SET to indicate the column and new value}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+UPDATE }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+tabel_name}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+SET }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+column1 = value1, column 2 = value2 OR column1 = value - 1}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+WHERE }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+column = value}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+---------------------------------------------------------------------------------------------------------------------------}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs28\lang9\loch\f3\hich\af3
+2. ------------QUERIES------------}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* SELECT- }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Selects columns (use * for all columns)(can select multiple(SELECT name, year))}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* LIMIT - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+max number of rows to be displayed}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* AS - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Renames a column or table (used normally before FROM)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* DISTINCT}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+: - Filters out values. }{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab SELECT DISTINCT (value)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab FROM (table)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* CONDITIONAL with WHERE clause:}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab SELECT *FROM (table)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab WHERE (colum)( conditional) (ex:WHERE numbers < 5;)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* WILD CARDS:}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab - }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+_ Wild Card }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+- Matches any single unspecified character}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab \tab SELECT name FROM movies}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab \tab WHERE name LIKE '_ove'; }{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab \tab --(Matches anything with a single character followed by 'ove')}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+- % Wild Card }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+- Matches 0 or more of any unspecified number of charcters}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab \tab SELECT name FROM movies}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab \tab WHERE name LIKE 'The%';}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab \tab --(Matches any movie that begins with 'the' followed by 0 or more characters)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* ORDER BY: }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+- Used to sort a colum alphabetically or numerically by ASC or DESC}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab SELECT * FROM (table)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab ORDER BY  year DESC;}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab --(Orders the year by descending order (the default is ascending)(always after WHERE \tab \tab    if present)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* CASE - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Creates different outputs (SQL if-then) usually in SELECT statement (ends with end)\tab SELECT (column), (use ' , ' for CASE)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab CASE}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab   WHEN (condition) THEN (output)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab   WHEN (condition) THEN (output)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab   ELSE (output)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab END (use END AS (new column name) to shorten column name)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab FROM (table)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* HAVING - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+SImilar to WHERE but used with aggregate functions. (comes after GROUP BY, but \tab \tab \tab \tab \tab \tab \tab \tab \tab before ORDER BY and LIMIT)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab SELECT COUNT(solumn name) FROM (table)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab HAVING COUNT(column name) (condition);}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+***EXAMPLE OF MULTIPLE COMMANDS QUERY***}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab SELECT }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+name, year, imdb_rating,}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+CASE}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+WHEN }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+imdb_rating > 7 }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+THEN }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+'Great'}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+WHEN }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+imdb_rating > 5 }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+THEN }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+'Alright'}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+WHEN }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+imdb_rating }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+IS NULL THEN}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ 'null'}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ELSE }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+'Not good'}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+END AS }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+'Score'}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+FROM }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+movies}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+WHERE }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+year < 2010}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ORDER BY }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+imdb_rating }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+DESC}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+LIMIT }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+10;}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+---------------------------------------------------------------------------------------------------------------------------}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs28\lang9\loch\f3\hich\af3
+3. ------------OPERATORS------------}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* IS NULL - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Unknown values/missing values}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* IS NOT NULL - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Checks for values not NULL}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* AND }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+- Displays rows if ALL conditions are true}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* OR - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Displays rows if ANY condition is true}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* LIKE Operator: }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+- Used with WHERE to match specific pattern}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab SELECT names FROM (table)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab WHERE name LIKE 'star%';}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab --(Matches names from table that begin with 'star'. Can also be used like '%star%.)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* BETWEEN: - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Filters results with a certain range}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab SELECT * FROM (table)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab WHERE number BETWEEN 1 AND 10}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab --(Filters numbers/ range from 1 up to and including 10)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+--------------------------------------------------------------------------------------------------------------------------}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs28\lang9\loch\f3\hich\af3
+4. ------------AGGREGATE FUNCTIONS------------}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+*AGGREGATE FUNCTIONS - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+perform a calculation on a set of values and return a single value}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* COUNT( ) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Count the number of rows (non empty values)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab COUNT(*) - Counts every row (includes null)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab COUNT((column name)) - Counts rows in the column (doesnt include null)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* SUM(}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Sum of values in that column}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab SELECT SUM(column name) FROM (table);}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* MAX(}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Largest value in that column}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab SELECT MAX(column name) FROM (table);}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* MIN(}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Smallest value in a column}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab SELECT MIN(column name) FROM (table name);}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* AVG( ) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Calculate average of values in a column}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab SELECT AVG(column name) FROM (table name);}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* ROUND( ) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Rounds values in a column to number of decimal places specified by integer \tab \tab \tab \tab (takes 2 arguments column name, and an integer)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab SELECT name, ROUND(price, integer) FROM (table); }{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab \tab \tab (returns names and the rounded price)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+*GROUP BY( ) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Arrange identical data into groups Used with aggregate functions in collaboration with SELECT. (comes after any WHERE but before ORDER BY or LIMIT)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+SELECT}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ column_name }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+FROM }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+table_name}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+GROUP BY }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+column_name}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ORDER BY }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+column_name;}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* YEAR( )- }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Filter by year from a }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+DATE }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+column.}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+WHERE YEAR (}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+date_column_name}{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+) > }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+1990;}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab (Shows rows with the year over 1990)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+---------------------------------------------------------------------------------------------------------------------------}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs28\lang9\loch\f3\hich\af3
+5. ------------ WINDOW FUNCTIONS -------------}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* WINDOW FUNCTIONS - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+perform calculations across a set of table rows related to the current row. (can use window and aggregate functions)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* OVER( ) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Defines the window of rows for the function to operate on, specifying }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+partitioning}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ and }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ordering. }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+SQL processes each row within this window according to the specified function (like SUM, AVG, etc.) }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+SUM(}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+column}{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+) OVER }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(}{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+PARTITION BY, ORDER BY}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+) can also use just }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+PARTITION }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+BY or }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ORDER }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+BY.}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* PARTITION - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+dividing the result set into smaller subsets, or "}{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+partitions}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+," based on the values of one or more columns. Each }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+partition }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+is then processed independently by the }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+window function}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+.}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab -}{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+SUM}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(available_copies) }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+OVER }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(}{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+PARTITION BY }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+category): The }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+SUM}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+() function calculates}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab the total number of available copies within each }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+partition }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(i.e., for each category).}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* ROW NUMBER( ) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+assign a unique row number to each row, ordered by the title column.}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab -}{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+SELECT }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+column1 }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ROW NUMBER () OVER }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(}{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ORDER BY }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+column1) }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+AS }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+'New_column_name' }{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+FROM }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+table_name;}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* RANK( ) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Assigns a rank to each row within a partition of a result set. Rows with equal values receive the same rank, and the next rank is incremented by the number of tied rows}{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+.}{\rtlch \ltrch\loch
+\line }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+- }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+RANK}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+() }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+OVER }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(}{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ORDER BY }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+publication_date): This assigns a rank to each book based \tab on the publication_date. Books with the same publication date receive the same rank, \tab and the next rank is incremented by the number of tied rows.}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* DENSE RANK( ) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Similar to }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+RANK}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(), but the next rank is incremented by 1 regardless of the number of tied rows.}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* NTILE(n)- }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+helps you distribute rows into a specified number of groups, making it easier to analyze data in segments. (used like percentiles)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(n) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+number of segments }
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* LEAD( ) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+provides access to a row at a specified physical offset following the current row within the result set (take this table, move forward by this much, use this default (if provided)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab - }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+LEAD}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(column, offset, default)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+column}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+: The column from which to retrieve the value.}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+offset}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+: The number of rows forward from the current row (default is 1).}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+default}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+: The value to return if the offset goes beyond the result set (optional).}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab - }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+SELECT }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+column1, column2, }{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab    }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+LEAD}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(column2, 1) OVER (ORDER BY column1) AS next_column2}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab    }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+FROM }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+table1;}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* LAG( ) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Opposite of }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+LEAD}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+. }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+LAG }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+looks back and }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+LEAD }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+looks forward.}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+*  WINDOW FUNCTION EXAMPLES:}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+MIN}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(publication_date) }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+OVER }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(}{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+PARTITION BY }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+category }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ORDER BY }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+publication_date)\tab *This calculates the minimum publication date within each category.}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+---------------------------------------------------------------------------------------------------------------------------}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs28\lang9\loch\f3\hich\af3
+6. -------------- MULTIPLE TABLES---------------}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* USING TABLES AND COLUMN NAMES- }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+table_name.column_name}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* JOIN - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Joins tables with another table (will only return results matching the condition \tab specified by ON). (columns from tables must match)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab -}{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+INNER JOIN }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+is the default JOIN}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+- LEFT JOIN }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+keeps all rows from the first table even if there is no matching rows.}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab \tab \tab (Will omit the unmatched row from the second table)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+- CROSS JOIN }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+used to combine each row form one table with each row from another}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab \tab table. (helpful for creating all possible combinations for the rows in two tables)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* ON - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+How to combine the tables (what to match the column information with)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+SELECT * FROM }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(table name)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+JOIN }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(other table name)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ON }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+table name.column name = table name.column name; }
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+SELECT }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+table name.column name, other_tablename.columnname}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+FROM }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(table name)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+JOIN }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(other table name)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ON }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+table.column = other_table.column}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+*UNION - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Combins results from multiple SELECT and filters duplicates}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+SELECT }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+column_name\tab \tab (Tables must have same number of columns)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+FROM }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+table_name\tab \tab (Columns must have the same data types in the same}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+UNION\tab \tab \tab \tab }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+order as the first table)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+SELECT }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+column_name}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+FROM }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+table_name;}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* FOREIGN KEY - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+PRIMARY KEY for one table appears in a differnet table. }
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* WITH - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Stores the result of a query in a temporary table using a nickname.}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+WITH}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ (new_temp_name) }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+AS }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+SELECT }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+FROM }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+(table_name)}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+---------------------------------------------------------------------------------------------------------------------------}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs28\lang9\loch\f3\hich\af3
+7. ------------STRING FUNCTIONS------------}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* CONCAT - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Used to connect or join multiple strings to a single string.}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+SELECT CONCAT(}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+'(', col1, ', ''', col2, ''', ''', 'name', ''')'}{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+)}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+FROM }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+your_table;}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab OUTPUT:}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab (123, 'example', 'name')}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+---------------------------------------------------------------------------------------------------------------------------}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs28\lang9\loch\f3\hich\af3
+8. ------------DATE ANDTIME FUNCTIONS -------------}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* CURDATE( ) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Returns the current date}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* DATE_SUB(date, INTERAL) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Subtracts specified time interval from a date}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* DATE_ADD(date, INTERVAL) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Adds specific time interval to a date}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* NOW( ) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Returns current date & time}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* YEAR( date ) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Extracts the year from a date}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* MONTH ( date ) -}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ Extracts month from a date}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+*DAY( date ) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Extracts the day of the month from date}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+* DATEDIFF( date1, date2 ) - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Returns the difference in days between 2 dates}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+---------------------------------------------------------------------------------------------------------------}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs28\lang9\loch\f3\hich\af3
+9. --------------DATA COMMANDS-------------}
+\par \pard\plain \s0\nowidctlpar\hyphpar0\cf0\kerning1\dbch\af7\langfe2052\dbch\af5\afs24\alang1081\loch\f0\hich\af0\fs24\lang1033\sl276\slmult1\sb0\sa200{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+INTO OUTFILE - }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+Output of select will be written to a file}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab CSV EXAMPLE:}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+SELECT}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ * }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+FROM }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+table_name}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+INTO OUTFILE}{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ 'C:\\path_to_file.csv'}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+FIELDS TERMINATED BY }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+','  -- fields(columns) seperated by comma}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+ENCLOSED BY }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+'"'  -- each field enclosed with double quotes}{\rtlch \ltrch\loch
+\line }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+\tab }{\i0\b\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+LINES TERMINATED BY }{\i0\b0\rtlch \ltrch\loch\fs22\lang9\loch\f3\hich\af3
+'n\\'  -- each row terminated by new line}
+\par }

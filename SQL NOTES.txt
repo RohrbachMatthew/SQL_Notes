@@ -1,0 +1,24 @@
+SQL NOTES
+
+
+Check dependencies:
+
+select table_name, column_name, constraint_name, referenced_column_name
+from information_schema.key_column_usage
+where table_name = 'table_name' and column_name = 'column_name';
+
+
+
+
+Check references tables:
+
+select table_name, column_name
+from information_schema.key_column_usage
+where referenced_table_name = 'table_name' and constraint_name = 'constraint_name';
+
+
+
+Drop foreign key constraint:
+
+ALTER TABLE table_name
+DROP FOREIGN KEY 'key name'
